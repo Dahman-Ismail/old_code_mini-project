@@ -161,7 +161,7 @@ Contributions, issues, and feature requests are welcome!
 
 ## Author
 
-Created with ❤️ using Python and CustomTkinter
+Created with Me using Python
 
 ---
 
