@@ -2,7 +2,7 @@
 
 A modern, user-friendly desktop application for generating and decoding QR codes with customization options.
 
-![Application Screenshot](screenshot.png)
+<!-- ![Application Screenshot](screenshot.png) -->
 
 ## Features
 
@@ -22,7 +22,7 @@ A modern, user-friendly desktop application for generating and decoding QR codes
   - Polygon points
   - File path
 
-## Screenshots
+<!-- ## Screenshots
 
 ### Generate QR Tab
 ![Generate QR Screenshot](https://via.placeholder.com/800x600/1a1a2e/eee?text=QR+Code+Generator+Tab)
@@ -30,7 +30,7 @@ A modern, user-friendly desktop application for generating and decoding QR codes
 
 ### Decode QR Tab
 ![Decode QR Screenshot](https://via.placeholder.com/800x600/1a1a2e/eee?text=QR+Code+Decoder+Tab)
-*Decode QR codes and view detailed information*
+*Decode QR codes and view detailed information* -->
 
 ## Requirements
 
@@ -56,10 +56,10 @@ pip install pyqrcode pypng pyzbar pillow customtkinter
 **Windows Users:**
 The application requires the `libzbar` library for QR code decoding. The code includes Windows-specific configuration:
 
-```python
+<!-- ```python
 os.add_dll_directory(r"C:\Users\Sanae\Desktop\tesssst\python")
 cdll.LoadLibrary(r"C:\Users\Sanae\Desktop\tesssst\python\libzbar-64.dll")
-```
+``` -->
 
 **⚠️ Important:** You need to:
 1. Download `libzbar-64.dll` from the [pyzbar releases](https://github.com/NaturalHistoryMuseum/pyzbar/)
