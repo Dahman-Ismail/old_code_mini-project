@@ -1,15 +1,6 @@
 import os
 from ctypes import cdll
-
-os.add_dll_directory(r"C:\Users\Sanae\Desktop\tesssst\python")
-cdll.LoadLibrary(r"C:\Users\Sanae\Desktop\tesssst\python\libzbar-64.dll")
-
 from pyzbar.pyzbar import decode
-
-
-
-# requerement :
-# pip install pyqrcode pypng pyzbar pillow customtkinter
 import tkinter as tk
 import customtkinter as ctk
 from tkinter import filedialog, messagebox, colorchooser
