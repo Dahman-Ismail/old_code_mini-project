@@ -1,5 +1,6 @@
 import sys
 import os
+<<<<<<< HEAD
 from pathlib import Path
 
 # Try to load libzbar for Windows
@@ -32,6 +33,10 @@ if sys.platform == "win32":
 
 # Requirements:
 # pip install pyqrcode pypng pyzbar pillow customtkinter
+=======
+from ctypes import cdll
+from pyzbar.pyzbar import decode
+>>>>>>> e0f898d0c2aace5a48fbe07aa0e8238b1290dd64
 import tkinter as tk
 import customtkinter as ctk
 from tkinter import filedialog, messagebox, colorchooser
