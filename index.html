@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daily Time Visualization (Jul–Oct 2025)</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f0f4ff, #ffffff);
+      color: #333;
+      text-align: center;
+      margin: 0;
+      padding: 30px;
+    }
+    h2 {
+      color: #444;
+      margin-bottom: 20px;
+    }
+    #chartContainer {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+      padding: 25px;
+    }
+    canvas {
+      width: 100%;
+      height: 500px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Daily Time Visualization (Jul–Oct 2025)</h2>
+  <div id="chartContainer">
+    <canvas id="timeChart"></canvas>
+  </div>
+
+  <script>
+    const days = [
+      "31-Jul","01-Aug","02-Aug","03-Aug","04-Aug","05-Aug","06-Aug","07-Aug","08-Aug","09-Aug",
+      "10-Aug","11-Aug","12-Aug","13-Aug","14-Aug","15-Aug","16-Aug","17-Aug","18-Aug","19-Aug",
+      "20-Aug","21-Aug","22-Aug","23-Aug","24-Aug","25-Aug","26-Aug","27-Aug","28-Aug","29-Aug",
+      "30-Aug","31-Aug","01-Sep","02-Sep","03-Sep","04-Sep","05-Sep","06-Sep","07-Sep","08-Sep",
+      "09-Sep","10-Sep","11-Sep","12-Sep","13-Sep","14-Sep","15-Sep","16-Sep","17-Sep","18-Sep",
+      "19-Sep","20-Sep","21-Sep","22-Sep","23-Sep","24-Sep","25-Sep","26-Sep","27-Sep","28-Sep",
+      "29-Sep","30-Sep","01-Oct","02-Oct","03-Oct","04-Oct","05-Oct","06-Oct","07-Oct","08-Oct",
+      "09-Oct","10-Oct","11-Oct","12-Oct","13-Oct","14-Oct","15-Oct","16-Oct","17-Oct","18-Oct",
+      "19-Oct","20-Oct","21-Oct","22-Oct","23-Oct","24-Oct","25-Oct","26-Oct","27-Oct","28-Oct",
+      "29-Oct","30-Oct","31-Oct"
+    ];
+
+    const times = [
+      "7h2min","6h57min","9h44min","3h3min","4h44min","5h45min","5h45min","10h9min","7h7min","7h37min",
+      "1h54min","5h39min","4h31min","6h40min","","3h39min","5h27min","3h6min","6h1min","7h3min",
+      "10h11min","","6h24min","3h23min","8h3min","2h16min","","","","","","",
+      "","","","","","6h50min","6h51min","3h21min","7h37min","8h1min",
+      "4h55min","3h29min","5h38min","5h44min","","","7h6min","6h16min","5h14min","6h43min",
+      "3h32min","1h54min","2h13min","1h","3h13min","","2h26min","5h45min","4h39min","5h40min",
+      "5h6min","6h51min","4h48min","4h45min","3h45min","3h53min","3h41min","8h7min",
+      "5h25min","5h50min","5h6min","2h19min","6h41min","5h50min","6h38min","7h","3h","4h52min",
+      "1h13min","2h55min","delete","8h58min","5h45min","3h37min","6h35min","4h35min","3h57min",
+      "4h38min","5h3min","6h8min",""
+    ];
+
+    function convertToHours(str) {
+      if (!str || str.toLowerCase() === 'delete') return null;
+      const match = str.match(/(\d+)h(?:(\d+)min)?/);
+      if (!match) return null;
+      const h = parseInt(match[1]);
+      const m = match[2] ? parseInt(match[2]) : 0;
+      return h + m / 60;
+    }
+
+    const validData = days
+      .map((day, i) => ({ day, hours: convertToHours(times[i]) }))
+      .filter(d => d.hours !== null);
+
+    const ctx = document.getElementById("timeChart").getContext("2d");
+
+    new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: validData.map(d => d.day),
+        datasets: [{
+          label: "Hours per Day",
+          data: validData.map(d => d.hours),
+          borderColor: "orange",
+          backgroundColor: "rgba(255,165,0,0.2)",
+          pointBackgroundColor: "orange",
+          pointRadius: 4,
+          borderWidth: 2,
+          tension: 0.3,
+          fill: true
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          x: { title: { display: true, text: "Day" }, ticks: { maxRotation: 90, minRotation: 45 } },
+          y: { title: { display: true, text: "Time (hours)" }, beginAtZero: true }
+        },
+        plugins: {
+          legend: { display: false },
+          tooltip: { mode: 'index', intersect: false }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
