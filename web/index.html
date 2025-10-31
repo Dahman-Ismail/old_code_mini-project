@@ -1,0 +1,134 @@
+<!-- python -m http.server 8000 -->
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Sleep/Work Time Visualization</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #eef2f3, #ffffff);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+      color: #333;
+    }
+    h2 {
+      margin-bottom: 20px;
+      color: #444;
+    }
+    .chart-container {
+      position: relative;
+      width: 90%;
+      max-width: 1200px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      padding: 25px;
+    }
+    canvas {
+      width: 100% !important;
+      height: 500px !important;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>⏱️ Daily Time Visualization (Jul–Oct 2025)</h2>
+  <div class="chart-container">
+    <canvas id="timeChart"></canvas>
+  </div>
+
+  <script>
+    // ---------- STEP 1: LOAD JSON FILE ----------
+    fetch("data.json")
+      .then(response => response.json())
+      .then(dataJSON => {
+        
+        // ---------- STEP 2: TIME CONVERSION ----------
+        function convertToHours(timeStr) {
+          if (!timeStr || timeStr.toLowerCase() === "delete") return null;
+          const match = timeStr.match(/(\d+)h(?:(\d+)min)?/);
+          if (!match) return null;
+          const h = parseInt(match[1]);
+          const m = match[2] ? parseInt(match[2]) : 0;
+          return h + m / 60;
+        }
+
+        const cleanData = dataJSON
+          .map(d => ({ day: d.day, hours: convertToHours(d.time) }))
+          .filter(d => d.hours !== null);
+
+        const labels = cleanData.map(d => d.day);
+        const values = cleanData.map(d => d.hours);
+
+        // ---------- STEP 3: CHART CONFIGURATION ----------
+        const ctx = document.getElementById("timeChart").getContext("2d");
+        const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient.addColorStop(0, "rgba(255, 165, 0, 0.6)");
+        gradient.addColorStop(1, "rgba(255, 255, 255, 0)");
+
+        new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: labels,
+            datasets: [{
+              label: "Hours per Day",
+              data: values,
+              fill: true,
+              backgroundColor: gradient,
+              borderColor: "orange",
+              borderWidth: 2.5,
+              pointBackgroundColor: "orange",
+              pointHoverRadius: 6,
+              tension: 0.35
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              x: {
+                title: { display: true, text: "Day", color: "#555", font: { size: 14 } },
+                ticks: { maxRotation: 90, minRotation: 45, color: "#777" },
+                grid: { color: "rgba(200,200,200,0.2)" }
+              },
+              y: {
+                title: { display: true, text: "Time (hours)", color: "#555", font: { size: 14 } },
+                beginAtZero: true,
+                ticks: { stepSize: 1, color: "#777" },
+                grid: { color: "rgba(200,200,200,0.2)" }
+              }
+            },
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                backgroundColor: "#333",
+                titleColor: "#fff",
+                bodyColor: "#fff",
+                callbacks: {
+                  label: (context) => `${context.parsed.y.toFixed(2)} hours`
+                }
+              },
+              title: { display: false }
+            },
+            animation: {
+              duration: 1200,
+              easing: "easeOutQuart"
+            }
+          }
+        });
+      })
+      .catch(error => console.error("Error loading JSON:", error));
+  </script>
+
+</body>
+</html>
